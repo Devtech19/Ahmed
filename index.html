@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أحمد جمعان | تجربة عالم النمل</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        soil:"#2B211C",
+        leaf:"#4F7A63",
+        sand:"#F3EFE7",
+        clay:"#8C4A2F",
+        gold:"#C9A24D"
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body{font-family:'Tajawal',sans-serif}
+
+/* reveal animation */
+.reveal{
+  opacity:0;
+  transform:translateY(60px);
+  transition:all 1.2s cubic-bezier(.22,1,.36,1);
+}
+.reveal.show{opacity:1;transform:none}
+
+/* cards */
+.card{
+  background:linear-gradient(160deg,#ffffff,#f5f1ea);
+  border-radius:28px;
+  padding:32px;
+  box-shadow:0 25px 50px rgba(0,0,0,.12);
+  transition:.5s;
+}
+.card:hover{transform:translateY(-12px) scale(1.02)}
+.dark .card{background:#1f2937}
+
+/* gallery */
+.gallery-item{
+  border-radius:22px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.5s;
+}
+.gallery-item:hover{transform:scale(1.05)}
+.gallery-item img,
+.gallery-item video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* modal */
+#modal{
+  background:rgba(0,0,0,.9);
+  backdrop-filter:blur(8px);
+}
+
+/* socials */
+.social-card{
+  background:linear-gradient(160deg,#fff,#f4efe5);
+  border-radius:24px;
+  padding:26px;
+  box-shadow:0 20px 40px rgba(0,0,0,.1);
+  transition:.4s;
+}
+.social-card:hover{transform:translateY(-8px)}
+</style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 dark:text-white transition">
+
+<!-- NAV -->
+<header class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur shadow">
+<nav class="max-w-7xl mx-auto flex justify-between items-center p-4">
+<h1 class="font-extrabold text-clay text-lg">أحمد جمعان</h1>
+<button id="themeToggle"
+class="ml-4 bg-gray-200 dark:bg-gray-700 p-2 rounded-full transition">
+🌙
+</button>
+<a href="#booking" class="bg-leaf text-white px-6 py-2 rounded-xl text-sm shadow">
+احجز الآن
+</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="min-h-screen flex items-center pt-32">
+<div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 p-6">
+
+<div class="reveal">
+<h2 class="text-4xl md:text-6xl font-extrabold text-clay mb-8 leading-tight">
+تجربة تعليمية مستوحاة من <span class="text-leaf">عالم النمل</span> 🐜
+</h2>
+<p class="text-xl text-gray-700 dark:text-gray-300 mb-12">
+تعليم حي يغرس القيادة، التنظيم، والعمل الجماعي من أذكى مخلوقات الطبيعة.
+</p>
+<a href="#booking"
+class="bg-leaf text-white px-12 py-4 rounded-2xl shadow-xl hover:scale-105 transition inline-block text-lg">
+احجز تجربة الآن
+</a>
+</div>
+
+<div class="reveal flex justify-center">
+<img src="ahmed.jpg"
+class="w-80 h-80 rounded-full object-cover border-4 border-leaf shadow-2xl">
+</div>
+
+</div>
+</section>
+
+<!-- STORY -->
+<section class="bg-sand dark:bg-gray-800 py-28">
+<div class="max-w-4xl mx-auto text-center reveal p-6">
+<h3 class="text-4xl font-extrabold mb-10">قصة أحمد جمعان</h3>
+<p class="text-lg leading-loose">
+بدأت الرحلة كهواية لمراقبة مستعمرات النمل،
+ومع الوقت تحولت إلى تجربة تعليمية مؤثرة.
+من خلال النمل نكتشف معنى القيادة، الصبر، والعمل بروح الفريق.
+</p>
+</div>
+</section>
+
+<!-- WHY -->
+<section class="py-28">
+<div class="max-w-7xl mx-auto p-6">
+<h3 class="text-4xl font-extrabold text-center mb-20">لماذا تجربة عالم النمل؟</h3>
+
+<div class="grid md:grid-cols-3 gap-12 reveal">
+<div class="card text-center text-lg">🐜 تعلم بالمشاهدة الحية</div>
+<div class="card text-center text-lg">🎯 تفاعل عملي مباشر</div>
+<div class="card text-center text-lg">🛡️ تجربة آمنة للأطفال</div>
+<div class="card text-center text-lg">📚 مفاهيم مبسطة</div>
+<div class="card text-center text-lg">🏫 مناسبة للمدارس</div>
+<div class="card text-center text-lg">👨‍👩‍👧 للعائلات والفعاليات</div>
+</div>
+</div>
+</section>
+
+<section class="py-24 bg-clay text-white">
+<div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center reveal">
+
+<div>
+<p class="text-5xl font-extrabold counter" data-target="120">0</p>
+<p class="mt-4 text-lg">تجربة تعليمية</p>
+</div>
+
+<div>
+<p class="text-5xl font-extrabold counter" data-target="35">0</p>
+<p class="mt-4 text-lg">مدرسة ومركز</p>
+</div>
+
+<div>
+<p class="text-5xl font-extrabold counter" data-target="4000">0</p>
+<p class="mt-4 text-lg">طفل مستفيد</p>
+</div>
+
+</div>
+</section>
+
+<!-- GALLERY -->
+<section class="bg-sand dark:bg-gray-800 py-28">
+<div class="max-w-7xl mx-auto p-6">
+<h3 class="text-4xl font-extrabold text-center mb-20">المعرض</h3>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
+<div class="gallery-item"><video src="video1.mp4" muted autoplay loop></video></div>
+<div class="gallery-item"><video src="video2.mp4" muted autoplay loop></video></div>
+<div class="gallery-item"><video src="video3.mp4" muted autoplay loop></video></div>
+<div class="gallery-item"><img src="gallery1.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery2.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery3.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery4.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery5.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery6.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery7.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery8.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery9.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery10.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery11.jpeg" onclick="openModal(this.src)"></div>
+<div class="gallery-item"><img src="gallery12.jpeg" onclick="openModal(this.src)"></div>
+</div>
+</div>
+</section>
+
+<!-- SOCIAL -->
+<section class="py-28 bg-sand dark:bg-gray-800">
+<div class="max-w-6xl mx-auto text-center reveal p-6">
+<h3 class="text-4xl font-extrabold mb-16">تابع أحمد جمعان</h3>
+
+<div class="grid md:grid-cols-3 gap-10">
+
+<a href="https://instagram.com/ants_yard" target="_blank" class="social-card">
+<p class="text-2xl">📸 Instagram</p>
+<p class="text-4xl font-extrabold text-leaf counter" data-target="12400">0</p>
+</a>
+
+<a href="https://tiktok.com/@ants_yard" target="_blank" class="social-card">
+<p class="text-2xl">🎥 TikTok</p>
+<p class="text-4xl font-extrabold text-leaf counter" data-target="8100">0</p>
+</a>
+
+<a href="https://www.youtube.com/@ants_yard" target="_blank" class="social-card">
+<p class="text-2xl">▶️ YouTube</p>
+<p class="text-4xl font-extrabold text-leaf counter" data-target="3600">0</p>
+</a>
+
+</div>
+</div>
+</section>
+
+
+<!-- BOOKING -->
+<section id="booking" class="py-32 bg-leaf text-white">
+<div class="max-w-4xl mx-auto text-center reveal p-6">
+<h3 class="text-4xl font-extrabold mb-8">جاهز تحجز التجربة؟</h3>
+<p class="text-lg mb-12">
+مناسبة للمدارس، المراكز التعليمية، والفعاليات.
+</p>
+<a href="https://wa.me/966564141837"
+class="bg-white text-leaf px-14 py-5 rounded-2xl font-bold shadow-xl hover:scale-105 transition inline-block text-lg">
+احجز عبر واتساب
+</a>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-soil text-white py-10">
+  <div class="max-w-6xl mx-auto text-center text-sm opacity-80">
+    <p>
+      © جميع الحقوق محفوظة 
+      <span class="font-bold">ants_yard</span>
+      —
+      <a href="https://instagram.com/iirashedx1" 
+         target="_blank"
+         class="underline hover:text-gold transition">
+        Dev by iiRashedx
+      </a>
+    </p>
+  </div>
+</footer>
+
+
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 hidden items-center justify-center z-50" onclick="closeModal()">
+<img id="modalImg" class="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl">
+</div>
+
+<script>
+document.querySelectorAll('.reveal').forEach(el=>{
+  window.addEventListener('scroll',()=>{
+    if(el.getBoundingClientRect().top < window.innerHeight-100)
+      el.classList.add('show');
+  })
+});
+
+function openModal(src){
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  modalImg.src=src;
+}
+function closeModal(){
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+</script>
+<script>
+const toggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+
+if(localStorage.theme === 'dark'){
+  html.classList.add('dark');
+  toggle.textContent = '☀️';
+}
+
+toggle.onclick = ()=>{
+  html.classList.toggle('dark');
+  const dark = html.classList.contains('dark');
+  toggle.textContent = dark ? '☀️' : '🌙';
+  localStorage.theme = dark ? 'dark' : 'light';
+}
+</script>
+<script>
+const counters = document.querySelectorAll('.counter');
+
+const runCounter = (counter)=>{
+  const target = +counter.dataset.target;
+  let count = 0;
+  const speed = target / 120;
+
+  const update = ()=>{
+    count += speed;
+    if(count < target){
+      counter.textContent = Math.floor(count);
+      requestAnimationFrame(update);
+    }else{
+      counter.textContent = target;
+    }
+  }
+  update();
+}
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      runCounter(entry.target);
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.6});
+
+counters.forEach(c=>observer.observe(c));
+</script>
+
+</body>
+</html>
