@@ -3,326 +3,1795 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>أحمد جمعان | تجربة عالم النمل</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-
-<script>
-tailwind.config = {
-  darkMode: 'class',
-  theme: {
-    extend: {
-      colors: {
-        soil:"#2B211C",
-        leaf:"#4F7A63",
-        sand:"#F3EFE7",
-        clay:"#8C4A2F",
-        gold:"#C9A24D"
-      }
-    }
-  }
-}
-</script>
+<title>أحمد جمعان | عالم النمل</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:'Tajawal',sans-serif}
-
-/* reveal animation */
-.reveal{
-  opacity:0;
-  transform:translateY(60px);
-  transition:all 1.2s cubic-bezier(.22,1,.36,1);
+:root {
+  --soil: #1a1108;
+  --soil2: #2c1e10;
+  --clay: #8C4A2F;
+  --clay-light: #b5613e;
+  --leaf: #3d6b4f;
+  --leaf-light: #5a9970;
+  --gold: #c9923a;
+  --gold-light: #e8b866;
+  --sand: #f5ede0;
+  --sand2: #ede0cc;
+  --cream: #fdf8f1;
+  --text-dark: #1a1108;
+  --text-mid: #4a3828;
+  --white: #ffffff;
 }
-.reveal.show{opacity:1;transform:none}
 
-/* cards */
-.card{
-  background:linear-gradient(160deg,#ffffff,#f5f1ea);
-  border-radius:28px;
-  padding:32px;
-  box-shadow:0 25px 50px rgba(0,0,0,.12);
-  transition:.5s;
-}
-.card:hover{transform:translateY(-12px) scale(1.02)}
-.dark .card{background:#1f2937}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* gallery */
-.gallery-item{
-  border-radius:22px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.5s;
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  cursor: none;
 }
-.gallery-item:hover{transform:scale(1.05)}
+
+/* ─── CUSTOM CURSOR ─── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform .15s, width .3s, height .3s, background .3s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all .35s cubic-bezier(.22,1,.36,1);
+  opacity: .6;
+}
+body:hover .cursor { transform: translate(-50%,-50%) scale(1.2); }
+a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9990;
+  opacity: .4;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--soil); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ─── HEADER ─── */
+header {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  padding: 0 40px;
+  transition: all .5s;
+}
+header.scrolled {
+  background: rgba(26,17,8,.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 rgba(201,146,58,.2);
+}
+nav {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  font-size: 1.4rem; font-weight: 900;
+  color: var(--gold-light);
+  letter-spacing: -.5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo span { font-size: 1.6rem; }
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  color: rgba(255,255,255,.75);
+  text-decoration: none; font-size: .95rem; font-weight: 500;
+  transition: color .3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; right: 0;
+  width: 0; height: 1.5px;
+  background: var(--gold);
+  transition: width .3s;
+}
+.nav-links a:hover { color: var(--gold-light); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  background: var(--gold);
+  color: var(--soil) !important;
+  padding: 10px 28px; border-radius: 50px;
+  font-weight: 700 !important; font-size: .9rem !important;
+  transition: all .3s !important; box-shadow: 0 4px 20px rgba(201,146,58,.35);
+}
+.nav-cta:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,146,58,.5); }
+.nav-cta::after { display: none !important; }
+
+/* hamburger */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 26px; height: 2px; background: var(--gold); border-radius: 2px; transition: .3s; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  background: var(--soil);
+  position: relative;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+
+/* animated background blobs */
+.blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); opacity: .18;
+  animation: blobFloat 12s ease-in-out infinite;
+}
+.blob-1 { width: 600px; height: 600px; background: var(--clay); top: -200px; right: -150px; animation-delay: 0s; }
+.blob-2 { width: 450px; height: 450px; background: var(--leaf); bottom: -150px; left: -100px; animation-delay: -4s; }
+.blob-3 { width: 300px; height: 300px; background: var(--gold); top: 40%; left: 40%; animation-delay: -8s; }
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-40px) scale(1.05); }
+  66% { transform: translate(-20px,20px) scale(.95); }
+}
+
+/* grid lines */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,146,58,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,146,58,.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.hero-content {
+  max-width: 1400px; margin: 0 auto; padding: 0 40px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+  position: relative; z-index: 2;
+  width: 100%;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,146,58,.15);
+  border: 1px solid rgba(201,146,58,.3);
+  color: var(--gold-light);
+  padding: 8px 20px; border-radius: 50px;
+  font-size: .85rem; font-weight: 600;
+  margin-bottom: 28px;
+  animation: fadeSlideUp 1s ease both;
+}
+.hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+.hero-title {
+  font-size: clamp(2.8rem, 5vw, 5.5rem);
+  font-weight: 900; line-height: 1.1;
+  color: var(--white); margin-bottom: 24px;
+  animation: fadeSlideUp 1s .2s ease both;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.15rem; color: rgba(255,255,255,.6);
+  line-height: 1.8; margin-bottom: 48px;
+  font-weight: 300;
+  animation: fadeSlideUp 1s .35s ease both;
+}
+
+.hero-btns {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  animation: fadeSlideUp 1s .5s ease both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--soil); padding: 16px 40px;
+  border-radius: 50px; font-weight: 800;
+  text-decoration: none; font-size: 1.05rem;
+  box-shadow: 0 8px 32px rgba(201,146,58,.4);
+  transition: all .4s; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(201,146,58,.5); }
+.btn-ghost {
+  border: 1.5px solid rgba(255,255,255,.25);
+  color: var(--white); padding: 16px 36px;
+  border-radius: 50px; font-weight: 600;
+  text-decoration: none; font-size: 1.05rem;
+  transition: all .4s; backdrop-filter: blur(10px);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); transform: translateY(-4px); }
+
+/* hero image */
+.hero-visual {
+  display: flex; justify-content: center; align-items: center;
+  position: relative;
+  animation: fadeSlideUp 1.2s .2s ease both;
+}
+.hero-img-wrap {
+  position: relative; width: 420px; height: 420px;
+}
+.hero-img-wrap::before {
+  content: '';
+  position: absolute; inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--clay), var(--leaf));
+  animation: spinSlow 8s linear infinite;
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+.hero-img-wrap::after {
+  content: '';
+  position: absolute; inset: 3px;
+  border-radius: 50%;
+  background: var(--soil);
+}
+.hero-img-wrap img {
+  position: absolute; inset: 8px;
+  width: calc(100% - 16px); height: calc(100% - 16px);
+  border-radius: 50%; object-fit: cover; z-index: 1;
+}
+.hero-badge {
+  position: absolute; bottom: 20px; left: -20px;
+  background: rgba(26,17,8,.9);
+  border: 1px solid rgba(201,146,58,.3);
+  backdrop-filter: blur(12px);
+  border-radius: 16px; padding: 14px 20px;
+  z-index: 2;
+  animation: floatUpDown 4s ease-in-out infinite;
+}
+@keyframes floatUpDown { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero-badge p { color: var(--gold-light); font-weight: 700; font-size: 1.3rem; }
+.hero-badge span { color: rgba(255,255,255,.6); font-size: .8rem; }
+
+.hero-badge2 {
+  position: absolute; top: 40px; right: -10px;
+  background: linear-gradient(135deg, var(--clay), var(--clay-light));
+  border-radius: 16px; padding: 12px 18px;
+  z-index: 2;
+  animation: floatUpDown 5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+.hero-badge2 p { color: white; font-weight: 700; font-size: 1.1rem; }
+.hero-badge2 span { color: rgba(255,255,255,.7); font-size: .8rem; }
+
+/* scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 36px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,.4); font-size: .8rem;
+  animation: fadeSlideUp 1s 1.5s ease both;
+}
+.scroll-dot {
+  width: 24px; height: 40px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  border-radius: 12px; position: relative;
+}
+.scroll-dot::after {
+  content: ''; position: absolute;
+  width: 4px; height: 8px;
+  background: var(--gold); border-radius: 2px;
+  top: 6px; left: 50%; transform: translateX(-50%);
+  animation: scrollDot 2s ease infinite;
+}
+@keyframes scrollDot { 0%{top:6px;opacity:1} 100%{top:24px;opacity:0} }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── ANT SVG DECORATIONS ─── */
+.ant-crawl {
+  position: absolute; pointer-events: none; z-index: 3;
+  opacity: .18;
+}
+.ant-crawl svg { width: 48px; height: 48px; fill: var(--gold); }
+.ant-1 { bottom: 100px; left: 8%; animation: antWalk1 18s linear infinite; }
+.ant-2 { bottom: 60px; left: 20%; animation: antWalk1 24s linear infinite; animation-delay: -6s; opacity: .1; }
+.ant-3 { bottom: 80px; right: 12%; animation: antWalk2 20s linear infinite; animation-delay: -10s; opacity: .14; }
+
+@keyframes antWalk1 {
+  0%   { transform: translateX(-200px) rotate(0deg); opacity: 0; }
+  5%   { opacity: .18; }
+  95%  { opacity: .18; }
+  100% { transform: translateX(calc(100vw + 200px)) rotate(0deg); opacity: 0; }
+}
+@keyframes antWalk2 {
+  0%   { transform: translateX(200px) rotate(180deg); opacity: 0; }
+  5%   { opacity: .14; }
+  95%  { opacity: .14; }
+  100% { transform: translateX(calc(-100vw - 200px)) rotate(180deg); opacity: 0; }
+}
+
+/* Ant facts section */
+#ant-facts {
+  background: var(--soil2);
+  padding: 80px 40px;
+  position: relative; overflow: hidden;
+}
+#ant-facts::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9923a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.ant-facts-inner {
+  max-width: 1400px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.ant-facts-header { text-align: center; margin-bottom: 60px; }
+.ant-facts-header h2 { font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 900; color: var(--white); }
+.ant-facts-header h2 em { color: var(--gold-light); font-style: normal; }
+.ant-facts-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px; align-items: start;
+}
+.ant-fact-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,146,58,.15);
+  border-radius: 24px; padding: 32px;
+  position: relative; overflow: hidden;
+  transition: all .4s;
+}
+.ant-fact-card:hover {
+  background: rgba(201,146,58,.08);
+  border-color: rgba(201,146,58,.4);
+  transform: translateY(-6px);
+}
+.ant-fact-card .ant-svg { 
+  width: 64px; height: 64px; margin-bottom: 20px;
+  opacity: .7;
+}
+.ant-fact-num {
+  font-size: 3rem; font-weight: 900;
+  color: var(--gold-light); line-height: 1;
+  margin-bottom: 8px;
+}
+.ant-fact-title { color: var(--white); font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; }
+.ant-fact-desc { color: rgba(255,255,255,.45); font-size: .9rem; line-height: 1.7; font-weight: 300; }
+
+/* large decorative ant behind section */
+.big-ant-bg {
+  position: absolute; right: -60px; top: 50%;
+  transform: translateY(-50%);
+  width: 320px; height: 320px; opacity: .04;
+  pointer-events: none;
+}
+
+/* ant trail divider */
+.ant-divider {
+  height: 56px; background: var(--soil);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+.ant-trail {
+  display: flex; gap: 60px;
+  animation: trailScroll 20s linear infinite;
+  white-space: nowrap; align-items: center;
+}
+.ant-trail svg { width: 28px; height: 28px; fill: var(--gold); opacity: .3; }
+@keyframes trailScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ant colony illustration section */
+#ant-colony {
+  padding: 120px 40px;
+  background: var(--sand);
+  position: relative; overflow: hidden;
+}
+.colony-wrap {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.colony-illustration {
+  position: relative; display: flex; justify-content: center; align-items: center;
+}
+.colony-svg-wrap {
+  width: 100%; max-width: 480px;
+  background: linear-gradient(160deg, var(--soil2), var(--soil));
+  border-radius: 32px; padding: 48px;
+  box-shadow: 0 40px 100px rgba(26,17,8,.3);
+  position: relative; overflow: hidden;
+}
+.colony-svg-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 70%, rgba(201,146,58,.12) 0%, transparent 60%);
+}
+.colony-svg-wrap svg { width: 100%; position: relative; z-index: 1; }
+.colony-text .section-eyebrow { display: block; text-align: right; }
+.colony-text h2 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-weight: 900; line-height: 1.2; margin: 16px 0 20px;
+}
+.colony-text h2 em { color: var(--clay); font-style: normal; }
+.colony-text p { font-size: 1rem; color: var(--text-mid); line-height: 1.85; font-weight: 300; }
+.colony-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.colony-fact {
+  background: var(--white); border: 1px solid var(--sand2);
+  border-radius: 16px; padding: 20px;
+  transition: .3s;
+}
+.colony-fact:hover { box-shadow: 0 10px 30px rgba(0,0,0,.08); transform: translateY(-3px); }
+.colony-fact-num { font-size: 1.8rem; font-weight: 900; color: var(--clay); }
+.colony-fact-label { font-size: .8rem; color: var(--text-mid); margin-top: 4px; }
+
+@media(max-width:900px){
+  .ant-facts-grid { grid-template-columns: 1fr; }
+  .colony-wrap { grid-template-columns: 1fr; }
+  .big-ant-bg { display: none; }
+}
+
+/* ─── STATS STRIP ─── */
+.stats-strip {
+  background: linear-gradient(135deg, var(--clay), var(--clay-light));
+  padding: 24px 40px;
+}
+.stats-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; justify-content: space-around; align-items: center;
+  gap: 20px; flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-item .stat-num {
+  font-size: 2.5rem; font-weight: 900; color: var(--white);
+  display: block; line-height: 1;
+}
+.stat-item .stat-label {
+  font-size: .85rem; color: rgba(255,255,255,.75);
+  font-weight: 400; margin-top: 4px;
+}
+.stat-divider {
+  width: 1px; height: 48px;
+  background: rgba(255,255,255,.2);
+}
+
+/* ─── SECTION COMMONS ─── */
+section { position: relative; }
+.section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+
+.section-header { text-align: center; margin-bottom: 72px; }
+.section-eyebrow {
+  display: inline-block;
+  font-size: .8rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--clay);
+  background: rgba(140,74,47,.08);
+  padding: 6px 18px; border-radius: 50px;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900; color: var(--text-dark);
+  line-height: 1.15;
+}
+.section-title em {
+  font-style: normal; color: var(--clay);
+}
+.section-sub {
+  font-size: 1.05rem; color: var(--text-mid);
+  margin-top: 16px; font-weight: 300;
+}
+
+/* ─── REVEAL ─── */
+.reveal {
+  opacity: 0; transform: translateY(50px);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+}
+.reveal.show { opacity: 1; transform: none; }
+.reveal-left { opacity: 0; transform: translateX(50px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+.reveal-left.show { opacity: 1; transform: none; }
+
+/* ─── STORY SECTION ─── */
+#story { padding: 120px 0; background: var(--sand); }
+
+.story-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.story-img-wrap {
+  border-radius: 32px; overflow: hidden;
+  position: relative; aspect-ratio: 4/5;
+}
+.story-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.story-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,17,8,.6), transparent);
+}
+.story-img-label {
+  position: absolute; bottom: 24px; right: 24px;
+  background: rgba(26,17,8,.8); backdrop-filter: blur(10px);
+  border: 1px solid rgba(201,146,58,.3);
+  color: var(--gold-light); padding: 10px 20px;
+  border-radius: 12px; font-weight: 700;
+}
+.story-text .section-eyebrow { display: block; text-align: right; }
+.story-text h2 {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 900; line-height: 1.2;
+  margin: 16px 0 24px; color: var(--text-dark);
+}
+.story-text h2 em { font-style: normal; color: var(--clay); }
+.story-text p {
+  font-size: 1.05rem; color: var(--text-mid);
+  line-height: 1.9; font-weight: 300;
+}
+.story-chips {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px;
+}
+.chip {
+  background: var(--white); border: 1px solid var(--sand2);
+  border-radius: 50px; padding: 8px 20px;
+  font-size: .9rem; font-weight: 600; color: var(--text-mid);
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+.chip span { margin-left: 6px; }
+
+/* ─── WHY CARDS ─── */
+#why { padding: 120px 0; background: var(--cream); }
+
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.why-card {
+  background: var(--white);
+  border: 1px solid var(--sand2);
+  border-radius: 28px; padding: 40px 32px;
+  transition: all .5s cubic-bezier(.22,1,.36,1);
+  position: relative; overflow: hidden;
+  cursor: none;
+}
+.why-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--clay), var(--clay-light));
+  opacity: 0; transition: opacity .5s;
+}
+.why-card:hover { transform: translateY(-12px); box-shadow: 0 40px 80px rgba(140,74,47,.15); }
+.why-card:hover::before { opacity: 1; }
+.why-card:hover .why-icon,
+.why-card:hover .why-title,
+.why-card:hover .why-desc { color: var(--white); }
+.why-icon {
+  font-size: 2.8rem; margin-bottom: 20px; position: relative; z-index: 1;
+  display: block;
+}
+.why-title {
+  font-size: 1.25rem; font-weight: 800; margin-bottom: 12px;
+  color: var(--text-dark); position: relative; z-index: 1;
+  transition: color .3s;
+}
+.why-desc {
+  font-size: .95rem; color: var(--text-mid);
+  line-height: 1.7; font-weight: 300;
+  position: relative; z-index: 1; transition: color .3s;
+}
+
+/* featured card */
+.why-card.featured {
+  background: linear-gradient(135deg, var(--soil), var(--soil2));
+  border-color: transparent;
+  grid-column: span 1;
+}
+.why-card.featured .why-title,
+.why-card.featured .why-desc { color: rgba(255,255,255,.9); }
+.why-card.featured::before { background: linear-gradient(135deg, var(--gold), var(--gold-light)); }
+
+/* ─── PROCESS ─── */
+#process { padding: 120px 0; background: var(--soil); overflow: hidden; }
+#process .section-title { color: var(--white); }
+#process .section-eyebrow { color: var(--gold-light); background: rgba(201,146,58,.15); }
+#process .section-sub { color: rgba(255,255,255,.5); }
+
+.process-timeline {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; position: relative; margin-top: 72px;
+}
+.process-timeline::before {
+  content: ''; position: absolute;
+  top: 40px; right: 40px; left: 40px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.process-step { text-align: center; padding: 0 20px; position: relative; }
+.step-num {
+  width: 80px; height: 80px;
+  border: 2px solid rgba(201,146,58,.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 1.8rem; font-weight: 900;
+  color: var(--gold); background: var(--soil);
+  position: relative; z-index: 1;
+  transition: all .4s;
+}
+.process-step:hover .step-num {
+  background: var(--gold); color: var(--soil);
+  border-color: var(--gold);
+  transform: scale(1.1);
+}
+.step-title { color: var(--white); font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+.step-desc { color: rgba(255,255,255,.45); font-size: .9rem; line-height: 1.7; font-weight: 300; }
+
+/* ─── GALLERY ─── */
+#gallery { padding: 120px 0; background: var(--sand); }
+
+.gallery-filter {
+  display: flex; justify-content: center; gap: 12px;
+  margin-bottom: 48px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 8px 24px; border-radius: 50px;
+  border: 1.5px solid var(--sand2);
+  background: transparent; font-family: 'Tajawal', sans-serif;
+  font-size: .9rem; font-weight: 600; cursor: none;
+  color: var(--text-mid); transition: all .3s;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--clay); border-color: var(--clay);
+  color: var(--white);
+}
+
+.gallery-masonry {
+  columns: 4; column-gap: 16px;
+}
+.gallery-item {
+  break-inside: avoid; margin-bottom: 16px;
+  border-radius: 20px; overflow: hidden;
+  position: relative; cursor: none;
+}
 .gallery-item img,
-.gallery-item video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.gallery-item video {
+  width: 100%; display: block;
+  transition: transform .6s cubic-bezier(.22,1,.36,1);
+}
+.gallery-item:hover img,
+.gallery-item:hover video { transform: scale(1.05); }
+.gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,17,8,.7), transparent);
+  opacity: 0; transition: .4s; display: flex; align-items: flex-end; padding: 20px;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay span { color: var(--white); font-size: .9rem; font-weight: 600; }
+
+/* ─── SOCIAL ─── */
+#social { padding: 120px 0; background: var(--cream); }
+
+.social-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.social-card {
+  background: var(--white); border: 1px solid var(--sand2);
+  border-radius: 28px; padding: 48px 36px;
+  text-decoration: none; display: block;
+  transition: all .5s cubic-bezier(.22,1,.36,1);
+  position: relative; overflow: hidden; text-align: center;
+}
+.social-card::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; transition: .4s;
+}
+.social-card.ig::after { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+.social-card.tt::after { background: linear-gradient(135deg, #000, #010101); }
+.social-card.yt::after { background: linear-gradient(135deg, #ff0000, #cc0000); }
+.social-card:hover { transform: translateY(-12px); box-shadow: 0 40px 80px rgba(0,0,0,.12); }
+.social-card:hover::after { opacity: 1; }
+.social-card:hover .social-name,
+.social-card:hover .social-num,
+.social-card:hover .social-handle { color: var(--white) !important; }
+.social-icon { font-size: 3rem; margin-bottom: 20px; position: relative; z-index: 1; }
+.social-name { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; position: relative; z-index: 1; transition: color .3s; }
+.social-num { font-size: 3rem; font-weight: 900; color: var(--clay); margin-bottom: 4px; position: relative; z-index: 1; transition: color .3s; }
+.social-handle { font-size: .9rem; color: var(--text-mid); position: relative; z-index: 1; transition: color .3s; }
+
+/* ─── TESTIMONIALS ─── */
+#testimonials { padding: 120px 0; background: var(--sand); }
+#testimonials .section-title em { color: var(--leaf); }
+
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testi-card {
+  background: var(--white); border-radius: 28px; padding: 36px;
+  border: 1px solid var(--sand2);
+  transition: all .4s;
+}
+.testi-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,.1); }
+.testi-stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 16px; }
+.testi-quote {
+  font-size: 1rem; color: var(--text-mid); line-height: 1.8;
+  font-weight: 300; margin-bottom: 24px;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--clay), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 900; color: white;
+  flex-shrink: 0;
+}
+.testi-name { font-weight: 700; font-size: .95rem; color: var(--text-dark); }
+.testi-role { font-size: .8rem; color: var(--text-mid); }
+
+/* ─── FAQ ─── */
+#faq { padding: 120px 0; background: var(--cream); }
+.faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.faq-item {
+  background: var(--white); border: 1px solid var(--sand2);
+  border-radius: 20px; overflow: hidden; transition: .3s;
+}
+.faq-item.open { box-shadow: 0 20px 50px rgba(0,0,0,.08); }
+.faq-question {
+  width: 100%; background: none; border: none;
+  padding: 24px 28px; font-family: 'Tajawal', sans-serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--text-dark);
+  text-align: right; cursor: none; display: flex;
+  justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--sand); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; transition: .4s;
+}
+.faq-item.open .faq-icon { background: var(--clay); color: white; transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.22,1,.36,1);
+  padding: 0 28px;
+}
+.faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
+.faq-answer p { font-size: .95rem; color: var(--text-mid); line-height: 1.8; font-weight: 300; }
+
+/* ─── BOOKING ─── */
+#booking {
+  padding: 140px 40px;
+  background: var(--soil);
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+#booking::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(140,74,47,.3) 0%, transparent 70%);
+}
+.booking-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+.booking-inner h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 900; color: var(--white); margin-bottom: 20px;
+}
+.booking-inner h2 em { font-style: normal; color: var(--gold-light); }
+.booking-inner p { font-size: 1.1rem; color: rgba(255,255,255,.55); margin-bottom: 48px; font-weight: 300; }
+.booking-options { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-wa {
+  background: #25D366; color: white;
+  padding: 18px 44px; border-radius: 50px;
+  font-weight: 800; text-decoration: none; font-size: 1.1rem;
+  box-shadow: 0 8px 32px rgba(37,211,102,.35);
+  transition: all .4s; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-wa:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(37,211,102,.5); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: #0f0a04;
+  padding: 60px 40px 40px;
+}
+.footer-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px; padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.footer-brand { }
+.footer-logo {
+  font-size: 1.6rem; font-weight: 900; color: var(--gold-light);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.footer-desc { font-size: .9rem; color: rgba(255,255,255,.4); line-height: 1.8; font-weight: 300; }
+.footer-col h4 { color: var(--white); font-weight: 700; margin-bottom: 20px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col a { color: rgba(255,255,255,.4); text-decoration: none; font-size: .9rem; transition: color .3s; }
+.footer-col a:hover { color: var(--gold-light); }
+.footer-bottom {
+  max-width: 1400px; margin: 32px auto 0;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .82rem; color: rgba(255,255,255,.3);
+}
+.footer-bottom a { color: rgba(255,255,255,.4); text-decoration: none; transition: color .3s; }
+.footer-bottom a:hover { color: var(--gold-light); }
+
+/* ─── MODAL ─── */
+#modal {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,.9); backdrop-filter: blur(12px);
+  display: none; align-items: center; justify-content: center;
+}
+#modal.open { display: flex; }
+#modalImg {
+  max-width: 90vw; max-height: 90vh;
+  border-radius: 20px; box-shadow: 0 40px 100px rgba(0,0,0,.8);
+  animation: modalIn .4s cubic-bezier(.22,1,.36,1);
+}
+@keyframes modalIn { from{transform:scale(.8);opacity:0} to{transform:scale(1);opacity:1} }
+#modalClose {
+  position: absolute; top: 24px; left: 24px;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,.1); border: none; cursor: none;
+  color: white; font-size: 1.4rem; display: flex; align-items: center; justify-content: center;
+  transition: .3s;
+}
+#modalClose:hover { background: rgba(255,255,255,.2); }
+
+/* ─── BACK TO TOP ─── */
+#topBtn {
+  position: fixed; bottom: 36px; left: 36px; z-index: 500;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--gold); border: none; cursor: none;
+  color: var(--soil); font-size: 1.3rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 30px rgba(201,146,58,.4);
+  opacity: 0; transform: translateY(20px);
+  transition: all .4s; pointer-events: none;
+}
+#topBtn.show { opacity: 1; transform: none; pointer-events: auto; }
+#topBtn:hover { transform: translateY(-4px); }
+
+/* ─── MOBILE MENU ─── */
+#mobileMenu {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--soil); display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 36px;
+}
+#mobileMenu.open { display: flex; }
+#mobileMenu a {
+  font-size: 2rem; font-weight: 800; color: var(--white);
+  text-decoration: none; transition: color .3s;
+}
+#mobileMenu a:hover { color: var(--gold-light); }
+#mobileClose {
+  position: absolute; top: 24px; left: 24px;
+  background: none; border: none; cursor: none;
+  font-size: 1.8rem; color: rgba(255,255,255,.5);
 }
 
-/* modal */
-#modal{
-  background:rgba(0,0,0,.9);
-  backdrop-filter:blur(8px);
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; gap: 48px; padding-top: 100px; }
+  .hero-visual { order: -1; }
+  .hero-img-wrap { width: 280px; height: 280px; }
+  .story-grid, .social-grid, .testi-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .process-timeline { grid-template-columns: 1fr 1fr; }
+  .process-timeline::before { display: none; }
+  .gallery-masonry { columns: 2; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  header { padding: 0 20px; }
 }
-
-/* socials */
-.social-card{
-  background:linear-gradient(160deg,#fff,#f4efe5);
-  border-radius:24px;
-  padding:26px;
-  box-shadow:0 20px 40px rgba(0,0,0,.1);
-  transition:.4s;
+@media (max-width: 600px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .process-timeline { grid-template-columns: 1fr; }
+  .gallery-masonry { columns: 2; }
+  .hero-btns { flex-direction: column; }
+  .section-wrap { padding: 0 20px; }
+  #booking { padding: 100px 20px; }
 }
-.social-card:hover{transform:translateY(-8px)}
 </style>
 </head>
+<body>
 
-<body class="bg-white dark:bg-gray-900 dark:text-white transition">
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV -->
-<header class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur shadow">
-<nav class="max-w-7xl mx-auto flex justify-between items-center p-4">
-<h1 class="font-extrabold text-clay text-lg">أحمد جمعان</h1>
-<button id="themeToggle"
-class="ml-4 bg-gray-200 dark:bg-gray-700 p-2 rounded-full transition">
-🌙
-</button>
-<a href="#booking" class="bg-leaf text-white px-6 py-2 rounded-xl text-sm shadow">
-احجز الآن
-</a>
-</nav>
+<!-- Mobile Menu -->
+<div id="mobileMenu">
+  <button id="mobileClose">✕</button>
+  <a href="#story">قصتي</a>
+  <a href="#why">لماذا نحن</a>
+  <a href="#gallery">المعرض</a>
+  <a href="#testimonials">آراء العملاء</a>
+  <a href="#faq">الأسئلة الشائعة</a>
+  <a href="https://wa.me/966564141837" class="btn-wa">احجز الآن</a>
+</div>
+
+<!-- Header -->
+<header id="header">
+  <nav>
+    <div class="nav-logo">
+      <span>🐜</span> أحمد جمعان
+    </div>
+    <ul class="nav-links">
+      <li><a href="#story">قصتي</a></li>
+      <li><a href="#why">لماذا نحن</a></li>
+      <li><a href="#gallery">المعرض</a></li>
+      <li><a href="#testimonials">آراء العملاء</a></li>
+      <li><a href="#faq">الأسئلة الشائعة</a></li>
+    </ul>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a href="https://wa.me/966564141837" class="nav-cta nav-links">احجز الآن</a>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 </header>
 
-<!-- HERO -->
-<section class="min-h-screen flex items-center pt-32">
-<div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 p-6">
+<!-- Hero -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="hero-grid"></div>
 
-<div class="reveal">
-<h2 class="text-4xl md:text-6xl font-extrabold text-clay mb-8 leading-tight">
-تجربة تعليمية مستوحاة من <span class="text-leaf">عالم النمل</span> 🐜
-</h2>
-<p class="text-xl text-gray-700 dark:text-gray-300 mb-12">
-تعليم حي يغرس القيادة، التنظيم، والعمل الجماعي من أذكى مخلوقات الطبيعة.
-</p>
-<a href="#booking"
-class="bg-leaf text-white px-12 py-4 rounded-2xl shadow-xl hover:scale-105 transition inline-block text-lg">
-احجز تجربة الآن
-</a>
-</div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-tag">تجربة تعليمية فريدة من نوعها 🐜</div>
+      <h1 class="hero-title">
+        استكشف <em>أسرار</em><br>عالم النمل
+      </h1>
+      <p class="hero-sub">
+        تجربة تعليمية حية مستوحاة من أذكى مخلوقات الطبيعة،<br>
+        تغرس القيادة، التنظيم، والعمل الجماعي في نفوس أطفالنا.
+      </p>
+      <div class="hero-btns">
+        <a href="https://wa.me/966564141837" class="btn-primary">
+          احجز تجربتك الآن 🚀
+        </a>
+        <a href="#story" class="btn-ghost">تعرف على أحمد</a>
+      </div>
+    </div>
 
-<div class="reveal flex justify-center">
-<img src="ahmed.jpg"
-class="w-80 h-80 rounded-full object-cover border-4 border-leaf shadow-2xl">
-</div>
+    <div class="hero-visual">
+      <div class="hero-img-wrap">
+        <img src="ahmed.jpg" alt="أحمد جمعان" onerror="this.style.background='linear-gradient(135deg,#8C4A2F,#C9923A)';this.style.display='block'">
+      </div>
+      <div class="hero-badge">
+        <p class="counter" data-target="4000">0</p>
+        <span>طفل مستفيد</span>
+      </div>
+      <div class="hero-badge2">
+        <p>⭐ 5.0</p>
+        <span>تقييم التجربة</span>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <!-- Crawling ant decorations -->
+  <div class="ant-crawl ant-1" style="color:var(--gold)">
+    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
+      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
+      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
+      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
+      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
+      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
+      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
+      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="ant-crawl ant-2" style="color:var(--gold)">
+    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
+      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
+      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
+      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
+      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
+      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
+      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
+      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="ant-crawl ant-3" style="color:var(--clay)">
+    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
+      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
+      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
+      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
+      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
+      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
+      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
+      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-dot"></div>
+    <span>اسحب للأسفل</span>
+  </div>
 </section>
 
-<!-- STORY -->
-<section class="bg-sand dark:bg-gray-800 py-28">
-<div class="max-w-4xl mx-auto text-center reveal p-6">
-<h3 class="text-4xl font-extrabold mb-10">قصة أحمد جمعان</h3>
-<p class="text-lg leading-loose">
-بدأت الرحلة كهواية لمراقبة مستعمرات النمل،
-ومع الوقت تحولت إلى تجربة تعليمية مؤثرة.
-من خلال النمل نكتشف معنى القيادة، الصبر، والعمل بروح الفريق.
-</p>
+<!-- Stats -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num counter" data-target="120">0</span>
+      <div class="stat-label">تجربة تعليمية</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num counter" data-target="35">0</span>
+      <div class="stat-label">مدرسة ومركز</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num counter" data-target="4000">0</span>
+      <div class="stat-label">طفل مستفيد</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">5.0 ⭐</span>
+      <div class="stat-label">متوسط التقييم</div>
+    </div>
+  </div>
 </div>
+
+<!-- Ant Trail Divider -->
+<div class="ant-divider">
+  <div class="ant-trail" id="antTrail">
+    <!-- repeated ant SVGs for infinite scroll trail -->
+  </div>
+</div>
+
+<!-- Ant Colony Illustration Section -->
+<section id="ant-colony">
+  <div class="colony-wrap reveal">
+    <div class="colony-illustration">
+      <div class="colony-svg-wrap">
+        <!-- Large detailed ant colony SVG illustration -->
+        <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+          <!-- ground -->
+          <ellipse cx="200" cy="340" rx="190" ry="18" fill="rgba(201,146,58,.08)"/>
+          
+          <!-- tunnel network -->
+          <path d="M200,320 Q160,280 140,240 Q120,200 150,170 Q170,150 200,160" fill="none" stroke="rgba(201,146,58,.15)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M200,320 Q240,280 260,240 Q280,200 250,170 Q230,150 200,160" fill="none" stroke="rgba(201,146,58,.15)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M200,160 Q200,120 200,80" fill="none" stroke="rgba(201,146,58,.2)" stroke-width="10" stroke-linecap="round"/>
+          <path d="M140,240 Q100,220 80,200" fill="none" stroke="rgba(201,146,58,.1)" stroke-width="8" stroke-linecap="round"/>
+          <path d="M260,240 Q300,220 320,200" fill="none" stroke="rgba(201,146,58,.1)" stroke-width="8" stroke-linecap="round"/>
+          <path d="M150,170 Q120,160 100,140" fill="none" stroke="rgba(201,146,58,.1)" stroke-width="6" stroke-linecap="round"/>
+          <path d="M250,170 Q280,160 300,140" fill="none" stroke="rgba(201,146,58,.1)" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- main queen ant -->
+          <g transform="translate(172, 40)">
+            <ellipse cx="28" cy="50" rx="20" ry="14" fill="#c9923a"/>
+            <ellipse cx="28" cy="30" rx="13" ry="10" fill="#c9923a"/>
+            <ellipse cx="28" cy="14" rx="9" ry="9" fill="#c9923a"/>
+            <circle cx="23" cy="11" r="2.5" fill="#1a1108"/>
+            <circle cx="33" cy="11" r="2.5" fill="#1a1108"/>
+            <line x1="23" y1="6" x2="12" y2="-2" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="33" y1="6" x2="44" y2="-2" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="11" cy="-3" r="3" fill="#c9923a"/>
+            <circle cx="45" cy="-3" r="3" fill="#c9923a"/>
+            <!-- crown detail -->
+            <path d="M18,6 L20,0 L28,4 L36,0 L38,6" fill="none" stroke="#e8b866" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- wings -->
+            <ellipse cx="10" cy="28" rx="14" ry="7" fill="rgba(201,146,58,.3)" transform="rotate(-20,10,28)"/>
+            <ellipse cx="46" cy="28" rx="14" ry="7" fill="rgba(201,146,58,.3)" transform="rotate(20,46,28)"/>
+            <!-- legs -->
+            <line x1="12" y1="26" x2="-4" y2="18" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="32" x2="-6" y2="32" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="46" x2="-2" y2="56" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="44" y1="26" x2="60" y2="18" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="44" y1="32" x2="62" y2="32" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="44" y1="46" x2="58" y2="56" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- worker ant 1 - carrying food -->
+          <g transform="translate(95, 155)">
+            <ellipse cx="20" cy="36" rx="12" ry="8" fill="#8C4A2F"/>
+            <ellipse cx="20" cy="22" rx="8" ry="6" fill="#8C4A2F"/>
+            <ellipse cx="20" cy="11" rx="6" ry="6" fill="#8C4A2F"/>
+            <circle cx="16" cy="9" r="1.5" fill="#1a1108"/>
+            <circle cx="24" cy="9" r="1.5" fill="#1a1108"/>
+            <line x1="16" y1="6" x2="8" y2="1" stroke="#8C4A2F" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="24" y1="6" x2="32" y2="1" stroke="#8C4A2F" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="7" cy="0" r="2" fill="#8C4A2F"/>
+            <circle cx="33" cy="0" r="2" fill="#8C4A2F"/>
+            <line x1="10" y1="20" x2="-2" y2="14" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="24" x2="-4" y2="24" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="33" x2="-2" y2="40" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="20" x2="42" y2="14" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="24" x2="44" y2="24" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="33" x2="42" y2="40" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- food particle above -->
+            <circle cx="20" cy="-8" r="7" fill="#5a9970" opacity=".8"/>
+            <circle cx="20" cy="-8" r="4" fill="#3d6b4f" opacity=".6"/>
+          </g>
+
+          <!-- worker ant 2 -->
+          <g transform="translate(264, 145)">
+            <ellipse cx="20" cy="36" rx="12" ry="8" fill="#8C4A2F"/>
+            <ellipse cx="20" cy="22" rx="8" ry="6" fill="#8C4A2F"/>
+            <ellipse cx="20" cy="11" rx="6" ry="6" fill="#8C4A2F"/>
+            <circle cx="16" cy="9" r="1.5" fill="#1a1108"/>
+            <circle cx="24" cy="9" r="1.5" fill="#1a1108"/>
+            <line x1="16" y1="6" x2="8" y2="1" stroke="#8C4A2F" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="24" y1="6" x2="32" y2="1" stroke="#8C4A2F" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="7" cy="0" r="2" fill="#8C4A2F"/>
+            <circle cx="33" cy="0" r="2" fill="#8C4A2F"/>
+            <line x1="10" y1="20" x2="-2" y2="14" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="24" x2="-4" y2="24" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="33" x2="-2" y2="40" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="20" x2="42" y2="14" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="24" x2="44" y2="24" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="33" x2="42" y2="40" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+
+          <!-- soldier ant -->
+          <g transform="translate(170, 220)">
+            <ellipse cx="20" cy="40" rx="16" ry="11" fill="#b5613e"/>
+            <ellipse cx="20" cy="24" rx="10" ry="8" fill="#b5613e"/>
+            <ellipse cx="20" cy="10" rx="10" ry="9" fill="#b5613e"/>
+            <!-- large mandibles -->
+            <path d="M12,8 Q2,2 0,8" fill="none" stroke="#b5613e" stroke-width="3" stroke-linecap="round"/>
+            <path d="M28,8 Q38,2 40,8" fill="none" stroke="#b5613e" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="14" cy="8" r="2" fill="#1a1108"/>
+            <circle cx="26" cy="8" r="2" fill="#1a1108"/>
+            <line x1="14" y1="5" x2="6" y2="-2" stroke="#b5613e" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="26" y1="5" x2="34" y2="-2" stroke="#b5613e" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8" y1="22" x2="-6" y2="14" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="28" x2="-8" y2="28" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="38" x2="-4" y2="47" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="32" y1="22" x2="46" y2="14" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="32" y1="28" x2="48" y2="28" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="32" y1="38" x2="44" y2="47" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- small worker ants -->
+          <g transform="translate(60, 280) scale(0.65)">
+            <ellipse cx="20" cy="36" rx="12" ry="8" fill="#8C4A2F" opacity=".7"/>
+            <ellipse cx="20" cy="22" rx="8" ry="6" fill="#8C4A2F" opacity=".7"/>
+            <ellipse cx="20" cy="11" rx="6" ry="6" fill="#8C4A2F" opacity=".7"/>
+            <line x1="10" y1="20" x2="-2" y2="14" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="10" y1="33" x2="-2" y2="40" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="20" x2="42" y2="14" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="33" x2="42" y2="40" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(290, 285) scale(0.65)">
+            <ellipse cx="20" cy="36" rx="12" ry="8" fill="#8C4A2F" opacity=".7"/>
+            <ellipse cx="20" cy="22" rx="8" ry="6" fill="#8C4A2F" opacity=".7"/>
+            <ellipse cx="20" cy="11" rx="6" ry="6" fill="#8C4A2F" opacity=".7"/>
+            <line x1="10" y1="20" x2="-2" y2="14" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="10" y1="33" x2="-2" y2="40" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="20" x2="42" y2="14" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="33" x2="42" y2="40" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- egg cluster -->
+          <g transform="translate(178, 290)">
+            <ellipse cx="4" cy="8" rx="5" ry="7" fill="rgba(243,239,231,.25)"/>
+            <ellipse cx="14" cy="10" rx="5" ry="7" fill="rgba(243,239,231,.2)"/>
+            <ellipse cx="24" cy="8" rx="5" ry="7" fill="rgba(243,239,231,.25)"/>
+            <ellipse cx="9" cy="2" rx="5" ry="7" fill="rgba(243,239,231,.2)"/>
+            <ellipse cx="19" cy="2" rx="5" ry="7" fill="rgba(243,239,231,.22)"/>
+          </g>
+
+          <!-- decorative dots (pheromone trail) -->
+          <circle cx="140" cy="310" r="2" fill="rgba(201,146,58,.3)"/>
+          <circle cx="160" cy="315" r="1.5" fill="rgba(201,146,58,.2)"/>
+          <circle cx="180" cy="312" r="2" fill="rgba(201,146,58,.3)"/>
+          <circle cx="200" cy="317" r="1.5" fill="rgba(201,146,58,.2)"/>
+          <circle cx="220" cy="313" r="2" fill="rgba(201,146,58,.3)"/>
+          <circle cx="240" cy="316" r="1.5" fill="rgba(201,146,58,.2)"/>
+          <circle cx="260" cy="311" r="2" fill="rgba(201,146,58,.3)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="colony-text reveal-left">
+      <span class="section-eyebrow">علم النمل</span>
+      <h2>مستعمرة <em>متكاملة</em><br>كمجتمع بشري</h2>
+      <p>
+        كل مستعمرة نمل هي مجتمع متكامل لديه ملكة، جنود، عمال، وحضانات. يتواصلون بالفيرمونات، يبنون بنية تحتية معقدة، ويزرعون طعامهم بأنفسهم.
+      </p>
+      <br>
+      <p>
+        من خلال فهم عالم النمل، يتعلم أطفالنا مبادئ القيادة، التعاون، والاتصال الفعّال — مهارات تستمر معهم طوال حياتهم.
+      </p>
+      <div class="colony-facts">
+        <div class="colony-fact">
+          <div class="colony-fact-num">20,000+</div>
+          <div class="colony-fact-label">نملة في المستعمرة الواحدة</div>
+        </div>
+        <div class="colony-fact">
+          <div class="colony-fact-num">50×</div>
+          <div class="colony-fact-label">وزنها مقارنة بحجمها</div>
+        </div>
+        <div class="colony-fact">
+          <div class="colony-fact-num">140M</div>
+          <div class="colony-fact-label">سنة من التطور</div>
+        </div>
+        <div class="colony-fact">
+          <div class="colony-fact-num">20K</div>
+          <div class="colony-fact-label">نوع مختلف من النمل</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- WHY -->
-<section class="py-28">
-<div class="max-w-7xl mx-auto p-6">
-<h3 class="text-4xl font-extrabold text-center mb-20">لماذا تجربة عالم النمل؟</h3>
+<!-- Ant Facts Dark Section -->
+<section id="ant-facts">
+  <!-- big decorative background ant -->
+  <svg class="big-ant-bg" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="100" cy="100" rx="50" ry="35" fill="white"/>
+    <ellipse cx="100" cy="60" rx="34" ry="26" fill="white"/>
+    <ellipse cx="100" cy="28" rx="26" ry="26" fill="white"/>
+    <line x1="60" y1="54" x2="10" y2="30" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="60" y1="70" x2="5" y2="70" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="60" y1="95" x2="15" y2="115" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="140" y1="54" x2="190" y2="30" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="140" y1="70" x2="195" y2="70" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="140" y1="95" x2="185" y2="115" stroke="white" stroke-width="6" stroke-linecap="round"/>
+    <line x1="80" y1="12" x2="50" y2="-5" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <line x1="120" y1="12" x2="150" y2="-5" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  </svg>
 
-<div class="grid md:grid-cols-3 gap-12 reveal">
-<div class="card text-center text-lg">🐜 تعلم بالمشاهدة الحية</div>
-<div class="card text-center text-lg">🎯 تفاعل عملي مباشر</div>
-<div class="card text-center text-lg">🛡️ تجربة آمنة للأطفال</div>
-<div class="card text-center text-lg">📚 مفاهيم مبسطة</div>
-<div class="card text-center text-lg">🏫 مناسبة للمدارس</div>
-<div class="card text-center text-lg">👨‍👩‍👧 للعائلات والفعاليات</div>
-</div>
-</div>
+  <div class="ant-facts-inner">
+    <div class="ant-facts-header reveal">
+      <h2>حقائق مذهلة عن <em>النمل</em></h2>
+    </div>
+    <div class="ant-facts-grid reveal">
+      <div class="ant-fact-card">
+        <svg class="ant-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="42" rx="16" ry="11" fill="#c9923a"/>
+          <ellipse cx="50" cy="26" rx="11" ry="8" fill="#c9923a"/>
+          <ellipse cx="50" cy="12" rx="8" ry="8" fill="#c9923a"/>
+          <circle cx="44" cy="10" r="2" fill="#1a1108"/>
+          <circle cx="56" cy="10" r="2" fill="#1a1108"/>
+          <line x1="44" y1="7" x2="34" y2="1" stroke="#c9923a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="56" y1="7" x2="66" y2="1" stroke="#c9923a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="32" cy="0" r="2.5" fill="#c9923a"/>
+          <circle cx="68" cy="0" r="2.5" fill="#c9923a"/>
+          <line x1="36" y1="24" x2="18" y2="16" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="30" x2="15" y2="30" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="40" x2="18" y2="50" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="24" x2="82" y2="16" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="30" x2="85" y2="30" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="40" x2="82" y2="50" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="ant-fact-num">50×</div>
+        <div class="ant-fact-title">قوة خارقة</div>
+        <p class="ant-fact-desc">النملة تستطيع حمل ما يعادل ٥٠ ضعف وزن جسمها — كأن إنساناً يحمل سيارة!</p>
+      </div>
+      <div class="ant-fact-card">
+        <svg class="ant-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="42" rx="16" ry="11" fill="#8C4A2F"/>
+          <ellipse cx="50" cy="26" rx="11" ry="8" fill="#8C4A2F"/>
+          <ellipse cx="50" cy="12" rx="8" ry="8" fill="#8C4A2F"/>
+          <circle cx="44" cy="10" r="2" fill="#1a1108"/>
+          <circle cx="56" cy="10" r="2" fill="#1a1108"/>
+          <line x1="44" y1="7" x2="34" y2="1" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="56" y1="7" x2="66" y2="1" stroke="#8C4A2F" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="32" cy="0" r="2.5" fill="#8C4A2F"/>
+          <circle cx="68" cy="0" r="2.5" fill="#8C4A2F"/>
+          <line x1="36" y1="24" x2="18" y2="16" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="30" x2="15" y2="30" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="40" x2="18" y2="50" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="24" x2="82" y2="16" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="30" x2="85" y2="30" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="40" x2="82" y2="50" stroke="#8C4A2F" stroke-width="2" stroke-linecap="round"/>
+          <!-- crown -->
+          <path d="M42,6 L44,1 L50,4 L56,1 L58,6" fill="none" stroke="#e8b866" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="ant-fact-num">30 سنة</div>
+        <div class="ant-fact-title">عمر الملكة</div>
+        <p class="ant-fact-desc">ملكة النمل يمكن أن تعيش حتى ٣٠ عاماً وتضع ملايين البيض خلال حياتها.</p>
+      </div>
+      <div class="ant-fact-card">
+        <svg class="ant-svg" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="42" rx="16" ry="11" fill="#b5613e"/>
+          <ellipse cx="50" cy="26" rx="11" ry="8" fill="#b5613e"/>
+          <ellipse cx="50" cy="12" rx="8" ry="8" fill="#b5613e"/>
+          <circle cx="44" cy="10" r="2" fill="#1a1108"/>
+          <circle cx="56" cy="10" r="2" fill="#1a1108"/>
+          <line x1="44" y1="7" x2="34" y2="1" stroke="#b5613e" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="56" y1="7" x2="66" y2="1" stroke="#b5613e" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="32" cy="0" r="2.5" fill="#b5613e"/>
+          <circle cx="68" cy="0" r="2.5" fill="#b5613e"/>
+          <line x1="36" y1="24" x2="18" y2="16" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="30" x2="15" y2="30" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="36" y1="40" x2="18" y2="50" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="24" x2="82" y2="16" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="30" x2="85" y2="30" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="64" y1="40" x2="82" y2="50" stroke="#b5613e" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="ant-fact-num">20,000+</div>
+        <div class="ant-fact-title">نوع من النمل</div>
+        <p class="ant-fact-desc">أكثر من ٢٠ ألف نوع من النمل تعيش في كل بيئة على وجه الأرض تقريباً.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="story">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="story-grid">
+      <div class="reveal">
+        <div class="story-img-wrap">
+          <img src="ahmed.jpg" alt="أحمد جمعان" onerror="this.style.background='linear-gradient(135deg,#4F7A63,#8C4A2F)';this.style.minHeight='400px';this.alt=''">
+          <div class="story-img-overlay"></div>
+          <div class="story-img-label">أحمد جمعان 🐜</div>
+        </div>
+      </div>
+      <div class="story-text reveal-left" style="transition-delay:.2s">
+        <span class="section-eyebrow">قصتنا</span>
+        <h2>من هواية<br>إلى <em>رسالة تعليمية</em></h2>
+        <p>
+          بدأت الرحلة بمراقبة بسيطة لمستعمرات النمل في الحديقة، وسرعان ما تحولت هذه الهواية إلى شغف حقيقي. اكتشفت أن النمل يعلمنا الكثير عن القيادة، الصبر، التعاون، وتقسيم المهام.
+        </p>
+        <br>
+        <p>
+          اليوم، أحمل هذه الرسالة إلى المدارس، المراكز التعليمية، والفعاليات الأسرية، لأجعل التعلم تجربة حية لا تُنسى.
+        </p>
+        <div class="story-chips">
+          <div class="chip"><span>🎓</span> خبرة تعليمية</div>
+          <div class="chip"><span>🐜</span> عالم نمل متخصص</div>
+          <div class="chip"><span>❤️</span> شغف حقيقي</div>
+          <div class="chip"><span>🏆</span> نتائج مُثبتة</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="py-24 bg-clay text-white">
-<div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center reveal">
-
-<div>
-<p class="text-5xl font-extrabold counter" data-target="120">0</p>
-<p class="mt-4 text-lg">تجربة تعليمية</p>
-</div>
-
-<div>
-<p class="text-5xl font-extrabold counter" data-target="35">0</p>
-<p class="mt-4 text-lg">مدرسة ومركز</p>
-</div>
-
-<div>
-<p class="text-5xl font-extrabold counter" data-target="4000">0</p>
-<p class="mt-4 text-lg">طفل مستفيد</p>
-</div>
-
-</div>
+<!-- Why -->
+<section id="why">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">مميزاتنا</div>
+      <h2 class="section-title">لماذا تجربة <em>عالم النمل؟</em></h2>
+      <p class="section-sub">نقدم أكثر من مجرد درس — نقدم ذكرى لا تُنسى</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <span class="why-icon">🔬</span>
+        <h3 class="why-title">تعلم بالمشاهدة الحية</h3>
+        <p class="why-desc">مراقبة مباشرة لمستعمرات النمل الحقيقية تجعل التعلم ملموسًا ولا يُنسى.</p>
+      </div>
+      <div class="why-card featured">
+        <span class="why-icon">🎯</span>
+        <h3 class="why-title">تفاعل عملي مباشر</h3>
+        <p class="why-desc">يلمس الأطفال العلم بأيديهم، مما يرسخ المفاهيم في أذهانهم بشكل عميق.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🛡️</span>
+        <h3 class="why-title">آمن تماماً للأطفال</h3>
+        <p class="why-desc">بيئة مُحكمة ومُعدّة باحترافية تضمن تجربة ممتعة وآمنة لجميع الأعمار.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">📚</span>
+        <h3 class="why-title">مفاهيم علمية مبسّطة</h3>
+        <p class="why-desc">يتم تقديم مفاهيم القيادة، التنظيم، والبيولوجيا بلغة سهلة وممتعة.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">🏫</span>
+        <h3 class="why-title">مناسبة للمدارس</h3>
+        <p class="why-desc">تجارب متوافقة مع المناهج الدراسية ومصممة لتعزيز التعلم خارج الفصل.</p>
+      </div>
+      <div class="why-card">
+        <span class="why-icon">👨‍👩‍👧</span>
+        <h3 class="why-title">للعائلات والفعاليات</h3>
+        <p class="why-desc">مثالية للاحتفالات، الفعاليات الأسرية، ومخيمات الأطفال الصيفية.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- GALLERY -->
-<section class="bg-sand dark:bg-gray-800 py-28">
-<div class="max-w-7xl mx-auto p-6">
-<h3 class="text-4xl font-extrabold text-center mb-20">المعرض</h3>
-
-<div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
-<div class="gallery-item"><video src="video1.mp4" muted autoplay loop></video></div>
-<div class="gallery-item"><video src="video2.mp4" muted autoplay loop></video></div>
-<div class="gallery-item"><video src="video3.mp4" muted autoplay loop></video></div>
-<div class="gallery-item"><img src="gallery1.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery2.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery3.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery4.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery5.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery6.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery7.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery8.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery9.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery10.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery11.jpeg" onclick="openModal(this.src)"></div>
-<div class="gallery-item"><img src="gallery12.jpeg" onclick="openModal(this.src)"></div>
-</div>
-</div>
+<!-- Process -->
+<section id="process">
+  <div class="section-wrap" style="padding:120px 40px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">كيف تعمل؟</div>
+      <h2 class="section-title">خطوات <em style="color:var(--gold-light)">التجربة</em></h2>
+      <p class="section-sub">من الحجز حتى اللحظة التي لا تُنسى</p>
+    </div>
+    <div class="process-timeline reveal">
+      <div class="process-step">
+        <div class="step-num">١</div>
+        <h3 class="step-title">تواصل معنا</h3>
+        <p class="step-desc">اتصل بنا عبر واتساب لمناقشة تفاصيل التجربة ومتطلباتها.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">٢</div>
+        <h3 class="step-title">تخصيص التجربة</h3>
+        <p class="step-desc">نصمم البرنامج التعليمي بما يناسب عمر المجموعة وأهدافها.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">٣</div>
+        <h3 class="step-title">يوم التجربة</h3>
+        <p class="step-desc">جلسة تعليمية تفاعلية مليئة بالاكتشاف والمتعة والإثارة.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">٤</div>
+        <h3 class="step-title">التقييم والمتابعة</h3>
+        <p class="step-desc">نقيّم الأثر ونقدم موارد إضافية لتعزيز ما تم تعلمه.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- SOCIAL -->
-<section class="py-28 bg-sand dark:bg-gray-800">
-<div class="max-w-6xl mx-auto text-center reveal p-6">
-<h3 class="text-4xl font-extrabold mb-16">تابع أحمد جمعان</h3>
+<!-- Gallery -->
+<section id="gallery">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">معرض الصور</div>
+      <h2 class="section-title">لحظات <em>لا تُنسى</em></h2>
+    </div>
 
-<div class="grid md:grid-cols-3 gap-10">
+    <div class="gallery-filter reveal">
+      <button class="filter-btn active" data-filter="all">الكل</button>
+      <button class="filter-btn" data-filter="photo">صور</button>
+      <button class="filter-btn" data-filter="video">فيديو</button>
+    </div>
 
-<a href="https://instagram.com/ants_yard" target="_blank" class="social-card">
-<p class="text-2xl">📸 Instagram</p>
-<p class="text-4xl font-extrabold text-leaf counter" data-target="12400">0</p>
-</a>
-
-<a href="https://tiktok.com/@ants_yard" target="_blank" class="social-card">
-<p class="text-2xl">🎥 TikTok</p>
-<p class="text-4xl font-extrabold text-leaf counter" data-target="8100">0</p>
-</a>
-
-<a href="https://www.youtube.com/@ants_yard" target="_blank" class="social-card">
-<p class="text-2xl">▶️ YouTube</p>
-<p class="text-4xl font-extrabold text-leaf counter" data-target="3600">0</p>
-</a>
-
-</div>
-</div>
+    <div class="gallery-masonry reveal" id="galleryGrid">
+      <div class="gallery-item" data-type="video">
+        <video src="video1.mp4" muted autoplay loop playsinline></video>
+        <div class="gallery-overlay"><span>🎥 فيديو التجربة ١</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery1.jpeg" alt="صورة ١" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery2.jpeg" alt="صورة ٢" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="video">
+        <video src="video2.mp4" muted autoplay loop playsinline></video>
+        <div class="gallery-overlay"><span>🎥 فيديو التجربة ٢</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery3.jpeg" alt="صورة ٣" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery4.jpeg" alt="صورة ٤" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="video">
+        <video src="video3.mp4" muted autoplay loop playsinline></video>
+        <div class="gallery-overlay"><span>🎥 فيديو التجربة ٣</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery5.jpeg" alt="صورة ٥" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery6.jpeg" alt="صورة ٦" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery7.jpeg" alt="صورة ٧" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery8.jpeg" alt="صورة ٨" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+      <div class="gallery-item" data-type="photo">
+        <img src="gallery9.jpeg" alt="صورة ٩" onclick="openModal(this.src)" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-overlay"><span>📷 لحظة من التجربة</span></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-<!-- BOOKING -->
-<section id="booking" class="py-32 bg-leaf text-white">
-<div class="max-w-4xl mx-auto text-center reveal p-6">
-<h3 class="text-4xl font-extrabold mb-8">جاهز تحجز التجربة؟</h3>
-<p class="text-lg mb-12">
-مناسبة للمدارس، المراكز التعليمية، والفعاليات.
-</p>
-<a href="https://wa.me/966564141837"
-class="bg-white text-leaf px-14 py-5 rounded-2xl font-bold shadow-xl hover:scale-105 transition inline-block text-lg">
-احجز عبر واتساب
-</a>
-</div>
-</section>
-
-<!-- FOOTER -->
-<footer class="bg-soil text-white py-10">
-  <div class="max-w-6xl mx-auto text-center text-sm opacity-80">
-    <p>
-      © جميع الحقوق محفوظة 
-      <span class="font-bold">ants_yard</span>
-      —
-      <a href="https://instagram.com/iirashedx1" 
-         target="_blank"
-         class="underline hover:text-gold transition">
-        Dev by iiRashedx
+<!-- Social -->
+<section id="social">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">تواصل معنا</div>
+      <h2 class="section-title">تابع <em>أحمد جمعان</em></h2>
+      <p class="section-sub">كن جزءًا من مجتمعنا المتنامي</p>
+    </div>
+    <div class="social-grid reveal">
+      <a href="https://instagram.com/ants_yard" target="_blank" class="social-card ig">
+        <div class="social-icon">📸</div>
+        <div class="social-name">Instagram</div>
+        <div class="social-num counter" data-target="12400">0</div>
+        <div class="social-handle">@ants_yard</div>
       </a>
-    </p>
+      <a href="https://tiktok.com/@ants_yard" target="_blank" class="social-card tt">
+        <div class="social-icon">🎥</div>
+        <div class="social-name">TikTok</div>
+        <div class="social-num counter" data-target="8100">0</div>
+        <div class="social-handle">@ants_yard</div>
+      </a>
+      <a href="https://www.youtube.com/@ants_yard" target="_blank" class="social-card yt">
+        <div class="social-icon">▶️</div>
+        <div class="social-name">YouTube</div>
+        <div class="social-num counter" data-target="3600">0</div>
+        <div class="social-handle">@ants_yard</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">آراء العملاء</div>
+      <h2 class="section-title">ماذا يقولون <em>عنّا؟</em></h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"تجربة رائعة وغير مسبوقة! الأطفال كانوا في قمة السعادة، وتعلموا أشياء كثيرة بطريقة ممتعة جداً. بالتأكيد سنعود مرة أخرى."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">س</div>
+          <div>
+            <div class="testi-name">سارة المطيري</div>
+            <div class="testi-role">معلمة • مدرسة الأمل</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"نظمنا التجربة لطلاب الصف الثالث وكانت النتائج مذهلة. أحمد محترف جداً وقادر على التواصل مع الأطفال بأسلوب رائع."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">م</div>
+          <div>
+            <div class="testi-name">محمد العتيبي</div>
+            <div class="testi-role">مدير مركز تعليمي</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"أفضل هدية قدمناها لابننا في عيد ميلاده. ليلتها لم يتوقف عن الحديث عن النمل وأسرار مستعمراتهم. شكراً أحمد!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ن</div>
+          <div>
+            <div class="testi-name">نورة الشمري</div>
+            <div class="testi-role">أم • حفل عيد ميلاد خاص</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-wrap" style="padding-top:120px;padding-bottom:120px">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">الأسئلة الشائعة</div>
+      <h2 class="section-title">كل ما تريد <em>معرفته</em></h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">
+          ما الفئات العمرية المناسبة للتجربة؟
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>التجربة مناسبة لجميع الأعمار من ٥ سنوات فما فوق. يتم تكييف المحتوى والأسلوب بما يتناسب مع كل فئة عمرية لضمان أقصى استفادة وتفاعل.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          كم المدة الزمنية للتجربة؟
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>تتراوح مدة التجربة الواحدة بين ٦٠ إلى ١٢٠ دقيقة حسب حجم المجموعة والبرنامج المختار. يمكن تخصيص برامج أطول للمخيمات والفعاليات الكبرى.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          هل التجربة آمنة للأطفال؟
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>نعم تماماً. جميع مستعمرات النمل المستخدمة محددة بعناية لضمان السلامة الكاملة. لا يوجد أي خطر للسعات أو الإصابات، والتجربة مصممة لتكون آمنة ١٠٠٪.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          هل تتوفر التجربة في مدينتي؟
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>نخدم معظم المدن السعودية الكبرى. تواصل معنا عبر واتساب وسنوافيك بالتفاصيل الكاملة حول التوفر في منطقتك وتكاليف التنقل إن وجدت.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          ما تكلفة حجز التجربة؟
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>تختلف الأسعار حسب حجم المجموعة، نوع البرنامج، والموقع. تواصل معنا للحصول على عرض سعر مخصص يناسب احتياجاتك وميزانيتك.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section id="booking">
+  <div class="booking-inner reveal">
+    <h2>احجز تجربتك <em>الآن</em></h2>
+    <p>مناسبة للمدارس، المراكز التعليمية، الفعاليات الأسرية، وحفلات أعياد الميلاد</p>
+    <div class="booking-options">
+      <a href="https://wa.me/966564141837" class="btn-wa">
+        💬 احجز عبر واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">🐜 أحمد جمعان</div>
+      <p class="footer-desc">تجربة تعليمية مستوحاة من عالم النمل. نغرس القيادة، التنظيم، والعمل الجماعي في نفوس الأجيال القادمة.</p>
+    </div>
+    <div class="footer-col">
+      <h4>روابط سريعة</h4>
+      <ul>
+        <li><a href="#story">قصتي</a></li>
+        <li><a href="#why">لماذا نحن</a></li>
+        <li><a href="#gallery">المعرض</a></li>
+        <li><a href="#testimonials">آراء العملاء</a></li>
+        <li><a href="#faq">الأسئلة الشائعة</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>تابعنا</h4>
+      <ul>
+        <li><a href="https://instagram.com/ants_yard" target="_blank">📸 Instagram</a></li>
+        <li><a href="https://tiktok.com/@ants_yard" target="_blank">🎥 TikTok</a></li>
+        <li><a href="https://www.youtube.com/@ants_yard" target="_blank">▶️ YouTube</a></li>
+        <li><a href="https://wa.me/966564141837" target="_blank">💬 واتساب</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ants_yard — جميع الحقوق محفوظة</span>
+    <a href="https://instagram.com/iirashedx1" target="_blank">Dev by iiRashedx</a>
   </div>
 </footer>
 
-
-<!-- MODAL -->
-<div id="modal" class="fixed inset-0 hidden items-center justify-center z-50" onclick="closeModal()">
-<img id="modalImg" class="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl">
+<!-- Modal -->
+<div id="modal">
+  <button id="modalClose" onclick="closeModal()">✕</button>
+  <img id="modalImg" src="" alt="صورة">
 </div>
 
+<!-- Back to top -->
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 <script>
-document.querySelectorAll('.reveal').forEach(el=>{
-  window.addEventListener('scroll',()=>{
-    if(el.getBoundingClientRect().top < window.innerHeight-100)
-      el.classList.add('show');
-  })
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a,button,.gallery-item,.faq-question,.why-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='60px'; ring.style.height='60px'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='40px'; ring.style.height='40px'; });
 });
 
-function openModal(src){
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-  modalImg.src=src;
-}
-function closeModal(){
-  modal.classList.add('hidden');
-  modal.classList.remove('flex');
-}
-</script>
-<script>
-const toggle = document.getElementById('themeToggle');
-const html = document.documentElement;
+// ── HEADER SCROLL ──
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+  document.getElementById('topBtn').classList.toggle('show', window.scrollY > 300);
+});
 
-if(localStorage.theme === 'dark'){
-  html.classList.add('dark');
-  toggle.textContent = '☀️';
-}
+// ── MOBILE MENU ──
+document.getElementById('hamburger').onclick = () => document.getElementById('mobileMenu').classList.add('open');
+document.getElementById('mobileClose').onclick = () => document.getElementById('mobileMenu').classList.remove('open');
+document.querySelectorAll('#mobileMenu a').forEach(a => a.onclick = () => document.getElementById('mobileMenu').classList.remove('open'));
 
-toggle.onclick = ()=>{
-  html.classList.toggle('dark');
-  const dark = html.classList.contains('dark');
-  toggle.textContent = dark ? '☀️' : '🌙';
-  localStorage.theme = dark ? 'dark' : 'light';
-}
-</script>
-<script>
-const counters = document.querySelectorAll('.counter');
+// ── REVEAL ──
+const revealEls = document.querySelectorAll('.reveal, .reveal-left');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => { if(e.isIntersecting){ e.target.style.transitionDelay = (i*.05)+'s'; e.target.classList.add('show'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
 
-const runCounter = (counter)=>{
-  const target = +counter.dataset.target;
-  let count = 0;
-  const speed = target / 120;
-
-  const update = ()=>{
-    count += speed;
-    if(count < target){
-      counter.textContent = Math.floor(count);
-      requestAnimationFrame(update);
-    }else{
-      counter.textContent = target;
-    }
-  }
-  update();
-}
-
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
+// ── COUNTERS ──
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
     if(entry.isIntersecting){
-      runCounter(entry.target);
-      observer.unobserve(entry.target);
+      const el = entry.target;
+      const target = +el.dataset.target;
+      let count = 0;
+      const step = target / 80;
+      const update = () => {
+        count += step;
+        if(count < target){ el.textContent = Math.floor(count).toLocaleString('ar-SA'); requestAnimationFrame(update); }
+        else { el.textContent = target.toLocaleString('ar-SA'); }
+      };
+      update();
+      counterObs.unobserve(el);
     }
   });
-},{threshold:0.6});
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(c => counterObs.observe(c));
 
-counters.forEach(c=>observer.observe(c));
+// ── MODAL ──
+function openModal(src){ const m=document.getElementById('modal'); m.classList.add('open'); document.getElementById('modalImg').src=src; }
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+// ── ANT TRAIL ──
+const antSVG = `<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/><ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/><ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/><line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+const trail = document.getElementById('antTrail');
+if(trail){ let html = ''; for(let i=0;i<30;i++) html += `<span style="color:var(--gold);display:inline-flex;align-items:center;width:28px;height:28px">${antSVG}</span>`; trail.innerHTML = html + html; }
+
+
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.onclick = () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  };
+});
+
+// ── GALLERY FILTER ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const match = filter === 'all' || item.dataset.type === filter;
+      item.style.opacity = match ? '1' : '0.2';
+      item.style.transform = match ? '' : 'scale(0.95)';
+      item.style.transition = 'all .4s';
+    });
+  };
+});
 </script>
-
 </body>
 </html>
