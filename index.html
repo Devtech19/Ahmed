@@ -36,29 +36,25 @@ body {
   cursor: none;
 }
 
-/* ─── CUSTOM CURSOR ─── */
-.cursor {
-  width: 12px; height: 12px;
-  background: var(--gold);
-  border-radius: 50%;
+/* ─── ANT CURSOR ─── */
+#antCursor {
   position: fixed; top: 0; left: 0;
+  width: 52px; height: 52px;
   pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: transform .15s, width .3s, height .3s, background .3s;
-  mix-blend-mode: multiply;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s;
+  filter: drop-shadow(0 2px 8px rgba(201,146,58,.6));
 }
-.cursor-ring {
-  width: 40px; height: 40px;
-  border: 1.5px solid var(--gold);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: all .35s cubic-bezier(.22,1,.36,1);
-  opacity: .6;
+#antCursor.big { width: 72px; height: 72px; }
+
+/* ─── BACKGROUND WALKING ANTS ─── */
+.bg-ant {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
 }
-body:hover .cursor { transform: translate(-50%,-50%) scale(1.2); }
-a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+.bg-ant svg { display: block; }
 
 /* ─── NOISE TEXTURE OVERLAY ─── */
 body::before {
@@ -305,28 +301,7 @@ nav {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── ANT SVG DECORATIONS ─── */
-.ant-crawl {
-  position: absolute; pointer-events: none; z-index: 3;
-  opacity: .18;
-}
-.ant-crawl svg { width: 48px; height: 48px; fill: var(--gold); }
-.ant-1 { bottom: 100px; left: 8%; animation: antWalk1 18s linear infinite; }
-.ant-2 { bottom: 60px; left: 20%; animation: antWalk1 24s linear infinite; animation-delay: -6s; opacity: .1; }
-.ant-3 { bottom: 80px; right: 12%; animation: antWalk2 20s linear infinite; animation-delay: -10s; opacity: .14; }
-
-@keyframes antWalk1 {
-  0%   { transform: translateX(-200px) rotate(0deg); opacity: 0; }
-  5%   { opacity: .18; }
-  95%  { opacity: .18; }
-  100% { transform: translateX(calc(100vw + 200px)) rotate(0deg); opacity: 0; }
-}
-@keyframes antWalk2 {
-  0%   { transform: translateX(200px) rotate(180deg); opacity: 0; }
-  5%   { opacity: .14; }
-  95%  { opacity: .14; }
-  100% { transform: translateX(calc(-100vw - 200px)) rotate(180deg); opacity: 0; }
-}
+/* background ants handled by JS */
 
 /* Ant facts section */
 #ant-facts {
@@ -909,9 +884,40 @@ footer {
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- Ant Cursor -->
+<div id="antCursor">
+  <svg viewBox="0 0 80 52" xmlns="http://www.w3.org/2000/svg">
+    <!-- abdomen -->
+    <ellipse cx="40" cy="38" rx="18" ry="13" fill="#c9923a"/>
+    <!-- thorax -->
+    <ellipse cx="40" cy="20" rx="11" ry="9" fill="#b5793a"/>
+    <!-- head -->
+    <ellipse cx="40" cy="8" rx="9" ry="8" fill="#c9923a"/>
+    <!-- eyes -->
+    <circle cx="35" cy="6" r="2.5" fill="#1a1108"/>
+    <circle cx="45" cy="6" r="2.5" fill="#1a1108"/>
+    <circle cx="35.8" cy="5.2" r="1" fill="rgba(255,255,255,.4)"/>
+    <circle cx="45.8" cy="5.2" r="1" fill="rgba(255,255,255,.4)"/>
+    <!-- mandibles -->
+    <path d="M33,10 Q24,8 22,14" fill="none" stroke="#c9923a" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M47,10 Q56,8 58,14" fill="none" stroke="#c9923a" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- antennae -->
+    <path d="M36,2 Q28,-4 18,-2" fill="none" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+    <path d="M44,2 Q52,-4 62,-2" fill="none" stroke="#c9923a" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="17" cy="-2" r="3" fill="#e8b866"/>
+    <circle cx="63" cy="-2" r="3" fill="#e8b866"/>
+    <!-- left legs -->
+    <line x1="30" y1="17" x2="10" y2="8" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="29" y1="22" x2="7" y2="22" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="28" y1="35" x2="10" y2="47" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- right legs -->
+    <line x1="50" y1="17" x2="70" y2="8" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="51" y1="22" x2="73" y2="22" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="52" y1="35" x2="70" y2="47" stroke="#c9923a" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- abdomen sheen -->
+    <ellipse cx="37" cy="33" rx="6" ry="4" fill="rgba(255,255,255,.12)" transform="rotate(-15,37,33)"/>
+  </svg>
+</div>
 
 <!-- Mobile Menu -->
 <div id="mobileMenu">
@@ -986,70 +992,7 @@ footer {
     </div>
   </div>
 
-  <!-- Crawling ant decorations -->
-  <div class="ant-crawl ant-1" style="color:var(--gold)">
-    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
-      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
-      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
-      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
-      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
-      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
-      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
-      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="ant-crawl ant-2" style="color:var(--gold)">
-    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
-      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
-      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
-      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
-      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
-      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
-      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
-      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="ant-crawl ant-3" style="color:var(--clay)">
-    <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="38" rx="14" ry="10" fill="currentColor"/>
-      <ellipse cx="50" cy="22" rx="9" ry="7" fill="currentColor"/>
-      <ellipse cx="50" cy="10" rx="6" ry="6" fill="currentColor"/>
-      <circle cx="46" cy="8" r="1.5" fill="#1a1108"/>
-      <circle cx="54" cy="8" r="1.5" fill="#1a1108"/>
-      <line x1="46" y1="5" x2="36" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="54" y1="5" x2="64" y2="-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="35" cy="-2" r="2" fill="currentColor"/>
-      <circle cx="65" cy="-2" r="2" fill="currentColor"/>
-      <line x1="38" y1="20" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="24" x2="18" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="38" y1="36" x2="20" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="20" x2="80" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="24" x2="82" y2="24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="62" y1="36" x2="80" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-dot"></div>
-    <span>اسحب للأسفل</span>
-  </div>
-</section>
+  </section>
 
 <!-- Stats -->
 <div class="stats-strip">
@@ -1706,17 +1649,177 @@ footer {
 <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// ── CURSOR ──
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
-function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
-animRing();
-document.querySelectorAll('a,button,.gallery-item,.faq-question,.why-card').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='60px'; ring.style.height='60px'; });
-  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='40px'; ring.style.height='40px'; });
+// ── ANT CURSOR ──
+const antCursor = document.getElementById('antCursor');
+let mx = window.innerWidth/2, my = window.innerHeight/2;
+let prevMx = mx, prevMy = my;
+let cursorAngle = 0;
+
+document.addEventListener('mousemove', e => {
+  const dx = e.clientX - mx;
+  const dy = e.clientY - my;
+  if(Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+    cursorAngle = Math.atan2(dy, dx) * 180/Math.PI + 90;
+  }
+  prevMx = mx; prevMy = my;
+  mx = e.clientX; my = e.clientY;
+  antCursor.style.left = mx + 'px';
+  antCursor.style.top = my + 'px';
+  antCursor.style.transform = 'translate(-50%,-50%) rotate(' + cursorAngle + 'deg)';
 });
+
+// walking leg animation via CSS keyframes injected
+const legStyle = document.createElement('style');
+legStyle.textContent = `
+  @keyframes antLegWalk {
+    0%,100%{ transform: translate(-50%,-50%) rotate(var(--angle)); }
+    50%{ transform: translate(-50%,-50%) rotate(calc(var(--angle) + 8deg)) scaleX(1.04); }
+  }
+`;
+document.head.appendChild(legStyle);
+
+document.querySelectorAll('a,button,.gallery-item,.faq-question,.why-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { antCursor.classList.add('big'); });
+  el.addEventListener('mouseleave', () => { antCursor.classList.remove('big'); });
+});
+
+// ── BACKGROUND WALKING ANTS ──
+const ANT_SVG = (color, size) => `
+<svg width="${size}" height="${Math.round(size*0.65)}" viewBox="0 0 80 52" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="40" cy="38" rx="18" ry="13" fill="${color}"/>
+  <ellipse cx="40" cy="20" rx="11" ry="9" fill="${color}" opacity=".9"/>
+  <ellipse cx="40" cy="8" rx="9" ry="8" fill="${color}"/>
+  <circle cx="35" cy="6" r="2" fill="#1a1108"/>
+  <circle cx="45" cy="6" r="2" fill="#1a1108"/>
+  <path d="M36,2 Q28,-5 18,-3" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M44,2 Q52,-5 62,-3" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="17" cy="-3" r="2.5" fill="${color}"/>
+  <circle cx="63" cy="-3" r="2.5" fill="${color}"/>
+  <line x1="30" y1="17" x2="10" y2="8" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="29" y1="22" x2="7" y2="22" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="28" y1="35" x2="10" y2="46" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="17" x2="70" y2="8" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="51" y1="22" x2="73" y2="22" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="35" x2="70" y2="46" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <path d="M33,10 Q24,8 22,14" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <path d="M47,10 Q56,8 58,14" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
+// Ant configs: each has a path it follows
+const ANT_CONFIGS = [
+  { color:'#c9923a', opacity:.18, size:38, speed:0.4, startY:0.15, startX:-0.1, dir:1 },
+  { color:'#8C4A2F', opacity:.12, size:28, speed:0.25, startY:0.35, startX:1.1, dir:-1 },
+  { color:'#c9923a', opacity:.14, size:44, speed:0.35, startY:0.55, startX:-0.1, dir:1 },
+  { color:'#b5613e', opacity:.10, size:24, speed:0.18, startY:0.70, startX:1.1, dir:-1 },
+  { color:'#e8b866', opacity:.10, size:32, speed:0.30, startY:0.85, startX:-0.1, dir:1 },
+  { color:'#8C4A2F', opacity:.08, size:48, speed:0.20, startY:0.92, startX:1.1, dir:-1 },
+  { color:'#c9923a', opacity:.09, size:22, speed:0.45, startY:0.08, startX:1.1, dir:-1 },
+  { color:'#b5613e', opacity:.12, size:36, speed:0.28, startY:0.48, startX:-0.1, dir:1 },
+];
+
+// Ant walk state
+const ants = ANT_CONFIGS.map((cfg, i) => {
+  const el = document.createElement('div');
+  el.className = 'bg-ant';
+  el.innerHTML = ANT_SVG(cfg.color, cfg.size);
+  el.style.opacity = cfg.opacity;
+  // Stagger start positions
+  const startProgress = (i / ANT_CONFIGS.length);
+  const startX = cfg.dir === 1
+    ? (-cfg.size + startProgress * (window.innerWidth + cfg.size * 2))
+    : (window.innerWidth + cfg.size - startProgress * (window.innerWidth + cfg.size * 2));
+  document.body.appendChild(el);
+
+  return {
+    el,
+    x: startX,
+    y: cfg.startY * window.innerHeight,
+    speed: cfg.speed * 60,   // px per second
+    dir: cfg.dir,
+    size: cfg.size,
+    cfg,
+    // sine wave vertical drift
+    driftAmp: 18 + Math.random()*30,
+    driftFreq: 0.0003 + Math.random()*0.0004,
+    driftOffset: Math.random()*Math.PI*2,
+    baseY: cfg.startY * window.innerHeight,
+    // leg walk phase
+    legPhase: 0,
+    legSpeed: 8 + Math.random()*4
+  };
+});
+
+// walking leg animation: alternate leg sets
+function getWalkLegs(phase, size, color) {
+  const a = Math.sin(phase) * 8;
+  return `
+<svg width="${size}" height="${Math.round(size*0.75)}" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="40" cy="42" rx="18" ry="13" fill="${color}"/>
+  <ellipse cx="40" cy="24" rx="11" ry="9" fill="${color}" opacity=".9"/>
+  <ellipse cx="40" cy="10" rx="9" ry="8" fill="${color}"/>
+  <circle cx="35" cy="8" r="2" fill="#1a1108"/>
+  <circle cx="45" cy="8" r="2" fill="#1a1108"/>
+  <path d="M36,4 Q28,-3 18,-1" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M44,4 Q52,-3 62,-1" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="17" cy="-1" r="2.5" fill="${color}"/>
+  <circle cx="63" cy="-1" r="2.5" fill="${color}"/>
+  <!-- animated legs: A set -->
+  <line x1="30" y1="21" x2="${10+a}" y2="${9-a}" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="29" y1="25" x2="${5-a}" y2="25" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="28" y1="39" x2="${12+a}" y2="${50+a}" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <!-- B set (opposite phase) -->
+  <line x1="50" y1="21" x2="${70-a}" y2="${9-a}" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="51" y1="25" x2="${75+a}" y2="25" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="39" x2="${68-a}" y2="${50+a}" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <path d="M33,12 Q24,10 22,16" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+  <path d="M47,12 Q56,10 58,16" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+}
+
+let lastTime = performance.now();
+
+function animateAnts(now) {
+  const dt = Math.min((now - lastTime) / 1000, 0.1);
+  lastTime = now;
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  ants.forEach(ant => {
+    ant.x += ant.dir * ant.speed * dt;
+    ant.legPhase += ant.legSpeed * dt;
+
+    // drift vertically in a gentle sine wave
+    ant.y = ant.baseY + Math.sin(now * ant.driftFreq + ant.driftOffset) * ant.driftAmp;
+    // keep in viewport vertically
+    ant.y = Math.max(ant.size, Math.min(H - ant.size, ant.y));
+
+    // reset when off screen
+    if(ant.dir === 1 && ant.x > W + ant.size * 2) {
+      ant.x = -ant.size * 2;
+      ant.baseY = (0.05 + Math.random() * 0.9) * H;
+    } else if(ant.dir === -1 && ant.x < -ant.size * 2) {
+      ant.x = W + ant.size * 2;
+      ant.baseY = (0.05 + Math.random() * 0.9) * H;
+    }
+
+    // rotation: face direction + slight wobble
+    const wobble = Math.sin(ant.legPhase * 0.5) * 4;
+    const baseAngle = ant.dir === 1 ? 90 : -90;
+    const angle = baseAngle + wobble;
+
+    ant.el.style.left = ant.x + 'px';
+    ant.el.style.top = ant.y + 'px';
+    ant.el.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`;
+
+    // update SVG with animated legs every other frame
+    if(Math.round(ant.legPhase * 3) % 2 === 0) {
+      ant.el.innerHTML = getWalkLegs(ant.legPhase, ant.size, ant.cfg.color);
+    }
+  });
+
+  requestAnimationFrame(animateAnts);
+}
+requestAnimationFrame(animateAnts);
 
 // ── HEADER SCROLL ──
 const header = document.getElementById('header');
